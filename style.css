@@ -1,5 +1,7 @@
-img {
+.image {
 	box-shadow: 3px 3px 5px #4e2f02;
+	max-width: 400px;
+	max-height: 300px;
 }
 
 hr{
@@ -15,9 +17,6 @@ hr{
 
 .subHeader {
 	text-decoration: underline;
-}
-.imgComtainer {
-	align-content: center;
 }
 
 .container {
@@ -47,7 +46,12 @@ hr{
 }
 
 .navButton {
-	margin-bottom: 10px;
+	background-color: #f3c583;
+	margin: 8px;
+	border-radius: 25px;
+	border: solid 1px black;
+	padding: 5px;
+	box-shadow: 2px 2px 3px #4e2f02;
 }
 
 .navButton:hover{

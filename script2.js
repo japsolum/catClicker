@@ -1,3 +1,4 @@
+// Model
 const cats= {
 	"cats" : [
 		{
@@ -31,13 +32,17 @@ const cats= {
 		}
 	]
 };
-function onLoad() {
-	for (var i = 0; i < cats.cats.length; i++) {
-		formattedNavName = navBarItem.replace("%name%", cats.cats[i].name).replace("%name2%", cats.cats[i].name);
-		$(".navItems").append(formattedNavName);
-	}
 
-	displayImgContainer(0);
+// Octopus
+
+var thisCat
+
+function whichCat(id) {
+	for (var i = 0; i < cats.cats.length; i++) {
+		if (("nav" + cats.cats[i].name) === id) {
+			return(i);
+		}
+	}
 };
 
 function displayImgContainer(cat) {
@@ -53,30 +58,87 @@ function displayImgContainer(cat) {
 		$("#imgContainer").append(formattedNumClicks);
 };
 
-function displayCat(id) {
-	console.log("button clicked");
-	for (var i = 0; i < cats.cats.length; i++) {
-		if (cats.cats[i].name === id) {
-			displayImgContainer(i);
-		}
-	}
-};
-
 function addClicks (id) {
 	var clickedID,
 		clickedCounter;
+	thisCat = whichCat("nav" + id);
 
-	for (var i = 0; i < cats.cats.length; i++) {
-		if (cats.cats[i].name === id) {
-			clickedID = cats.cats[i].name,
-			clickedCounter = cats.cats[i].counter;
-			clickedCounter += 1;
-			cats.cats[i].counter = clickedCounter;
-		}
-	}
+	clickedID = cats.cats[thisCat].name,
+	clickedCounter = cats.cats[thisCat].counter;
+	clickedCounter += 1;
+	cats.cats[thisCat].counter = clickedCounter;
 
 	document.getElementById("numClicks" + clickedID).innerHTML = clickedCounter;
 }
 
-onLoad();
+function init() {
+	for (var i = 0; i < cats.cats.length; i++) {
+		formattedNavName = navBarItem.replace("%name%", cats.cats[i].name).replace("%name2%", cats.cats[i].name);
+		$(".navItems").append(formattedNavName);
+	}
+
+	displayImgContainer(0);
+};
+
+
+function displayCat(id) {
+	thisCat = whichCat(id);
+	
+	displayImgContainer(thisCat);
+};
+
+function showHideAdmin() {
+	$("#nameInput").val("");
+	$("#urlInput").val("");
+	$("#clicksInput").val("");
+
+	$(".form").toggle()
+};
+
+function saveAdmin(id) {
+	thisCat = whichCat(id);
+
+	if ($("#nameInput").val() !== undefined) {
+		cats.cats[thisCat].name = $("#nameInput").val();
+	}
+
+	if ($("#nameInput").val() !== undefined) {
+		cats.cats[thisCat].image = $("#urlInput").val();
+	}
+
+	if ($("#nameInput").val() !== undefined) {
+		var value = $("#clicksInput").val()
+		cats.cats[thisCat].counter = parseInt(value);
+	}
+
+	document.getElementById(id).innerHTML = $("#nameInput").val();
+	$("#" + id).attr("id", "nav" + cats.cats[thisCat].name);
+	displayImgContainer(thisCat);
+	showHideAdmin();
+};
+
+// View
+
+init();
+
+$(".navButton").click(function() {
+	var thisID = this.id;
+	displayCat(thisID);
+});
+
+$("#admin").click(function() {
+	showHideAdmin();
+});
+
+$("#cancel").click(function() {
+	showHideAdmin();
+});
+
+$("#save").click(function() {
+	thisCat = ("nav" + $("img").attr("id"));
+	saveAdmin(thisCat);
+});
+
+
+
 
